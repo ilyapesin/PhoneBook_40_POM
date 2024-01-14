@@ -20,14 +20,17 @@ public class RegistrationTests extends AppiumConfig {
 
     @Test
     public void RegistrationNegativeWrongEmail(){
-       Assert.assertTrue(
+      Assert.assertTrue(
                 new SplashScreen(driver)
                 .goToAuthenticationScreen()
                 .fillEmail("vasya_pupkin"+i+"gmail.com")
                 .fillPassword("Vp12345$")
                 .submitRegistrationNegative()
-             .isContactListActivityPresent());
+                        //.isErrorMessageHasText("{username=must be a well-formed email address}")
+                .isErrorMessageContainsText("{username=must be a well-formed email address}")
+        );
 
     }
+
 
 }

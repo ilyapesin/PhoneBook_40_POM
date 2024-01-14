@@ -2,6 +2,7 @@ import config.AppiumConfig;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import models.Contact;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -29,23 +30,27 @@ public class AddNewContactTests extends AppiumConfig {
     public void addNewContactPositive() {
         Contact contact = Contact.builder()
                 .name("John_" + i)
-                .lastName("Snow")
+                .lastName("Silver")
                 .phone("01234578" + i)
                 .email("john_" + i + "@mail.com")
                 .address("Rehovot")
                 .description("Best friend")
                 .build();
+        Assert.assertTrue(
         new ContactsListScreen(driver)
                 .openContactForm()
                 .fillContactForm(contact)
-                .submitCreate();
+                .submitCreate()
+                .isContactAddedScroll(contact)
+        );
     }
 
     @AfterMethod
     public void postcondition() {
-        if (new ContactsListScreen(driver).isContactListActivityPresent()) {
+        if(new ContactsListScreen(driver).isContactListActivityPresent()){
             new ContactsListScreen(driver).logout();
-            //new SplashScreen(driver);
+            new SplashScreen(driver);
         }
+
     }
 }
